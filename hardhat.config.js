@@ -1,18 +1,16 @@
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config()
 
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
-import * as dotenv from "dotenv";
-dotenv.config();
-
-const config: HardhatUserConfig = {
+/** @type import('hardhat/config').HardhatUserConfig */
+const {LISK_RPC_URL, ACCOUNT_PRIVATE_KEY, ETHER_SCAN} = process.env
+module.exports = {
   solidity: "0.8.24",
-  networks: {
-    // for testnet
-    "lisk-sepolia": {
-      url: process.env.LISK_RPC_URL!,
-      accounts: [process.env.ACCOUNT_PRIVATE_KEY!],
-      gasPrice: 1000000000,
-    },
+  networks:{
+    "lisk-sepolia":{
+      url:LISK_RPC_URL,
+      accounts: ACCOUNT_PRIVATE_KEY !== undefined ? [ACCOUNT_PRIVATE_KEY] : []  
+    }
+    
   },
   etherscan: {
     // Use "123" as a placeholder, because Blockscout doesn't need a real API key, and Hardhat will complain if this property isn't set.
@@ -33,6 +31,7 @@ const config: HardhatUserConfig = {
   sourcify: {
     enabled: false,
   },
-};
 
-export default config;
+
+  
+};
